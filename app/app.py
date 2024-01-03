@@ -1,8 +1,7 @@
 import os
 
 from starlette.middleware.cors import CORSMiddleware
-
-from api.Base import router
+from core.Router import AllRouter
 from config import settings
 from fastapi import FastAPI, HTTPException
 from core.Event import startup, stopping
@@ -52,7 +51,7 @@ application.add_middleware(
 
 
 # routers
-application.include_router(router)
+application.include_router(AllRouter)
 
 
 if __name__ == '__main__':

@@ -8,7 +8,8 @@ class Config(BaseSettings):
     VERSION: str = '0.0.1'
     PROJECT_NAME: str = 'fast_demo'
     DESCRIPTION: str = 'fast_demo'
-    STATIC_DIR: str = os.path.join(os.getcwd(), '../static')
+    STATIC_DIR: str = os.path.join(os.getcwd(), './static')
+    TEMPLATES_DIR: str = os.path.join(os.getcwd(), './templates')
     CORS_ORIGINS: List[str] = ['*']
     CORS_ALLOW_CREDENTIALS: bool = True
     CORS_ALLOW_METHODS: List[str] = ['*']
