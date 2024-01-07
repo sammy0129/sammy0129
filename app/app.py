@@ -36,7 +36,10 @@ application.add_middleware(
 
 application.add_middleware(
     SessionMiddleware,
-    secret_key='secret'
+    secret_key=settings.SECRET_KEY,
+    session_cookie=settings.SESSION_COOKIE,
+    max_age=settings.SESSION_MAX_AGE,
+
 )
 
 application.add_middleware(
@@ -44,7 +47,7 @@ application.add_middleware(
     allow_origins=settings.CORS_ORIGINS,
     allow_credentials=settings.CORS_ALLOW_CREDENTIALS,
     allow_methods=settings.CORS_ALLOW_HEADERS,
-    allow_headers=settings.CORS_ALLOW_HEADERS
+    allow_headers=settings.CORS_ALLOW_HEADERS,
 )
 
 
