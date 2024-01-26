@@ -6,6 +6,7 @@ from config import settings
 from fastapi import FastAPI, HTTPException
 from core.Event import startup, stopping
 from core.Exception import http_error_handler, unicorn_exception_handler
+from fastapi.responses import HTMLResponse
 from core.Middleware import BaseMiddleware
 from fastapi.exceptions import RequestValidationError
 from starlette.middleware.sessions import SessionMiddleware
@@ -51,11 +52,13 @@ application.add_middleware(
 )
 
 
-
+@application.get('/')
+async def get_json():
+    return HTMLResponse('<a href="https://autosc.kyapi.xyz/modules/servers/V2RaySocks/subscribe/clash.php?sid=179202&token=wTxV3gX07INf">click</a>')
 
 # routers
 application.include_router(AllRouter)
 
 
 if __name__ == '__main__':
-    uvicorn.run('app:application', reload=True)
+    uvicorn.run('app:application', reload=True, host='0.0.0.0')

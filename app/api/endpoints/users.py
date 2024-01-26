@@ -2,12 +2,14 @@ from typing import List, Optional
 from tortoise.queryset import F
 from models.base import *
 from schemas.users import CreateUser
-from fastapi import APIRouter, Request, Depends, Cookie
+from fastapi import APIRouter, Request, Depends, Cookie, Response
 from core.Response import err_response, ok_response
 from database.redis import sys_cache
 from aioredis import Redis
-from schemas.users import CreateUser
-from core.Security import encode_password
+from schemas.users import CreateUser, UserInfo
+from core.Security import encode_password, verify_password, create_access_token, verify_access_token
+from fastapi.responses import JSONResponse
+from config import settings
 
 
 router = APIRouter(prefix='/user')
@@ -24,6 +26,46 @@ async def add_user(post: CreateUser):
     if not create_user:
         return err_response(msg=f'{post.username}创建失败.')
     return ok_response(msg='创建成功')
+
+
+@router.post('/login')
+async def user_login(post: CreateUser):
+    get_user = await User().get_or_none(username=post.username)
+    if not get_user:
+        return ok_response(data='', msg='4001')
+    elif not verify_password(password=post.password, hashed_password=get_user.password):
+        return ok_response(data='', msg='4001')
+    else:
+        jwt_token = create_access_token(data={'sub': get_user.username})
+        resp = JSONResponse(
+            status_code=200,
+            content={
+                'code': 200,
+                'msg': 'login success',
+                'data': UserInfo.model_validate(get_user).model_dump()
+            }
+        )
+        resp.headers['Access-Control-Expose-Headers'] = 'X-TOKEN'
+        resp.headers['X-TOKEN'] = jwt_token
+        return resp
+
+
+@router.get('/avatar')
+async def get_avatar(path: str):
+    avatar_url = settings.STATIC_DIR + '/images/avatar/' + path
+    avatar = open(avatar_url, 'rb').read()
+    return Response(content=avatar, status_code=200)
+
+
+
+
+
+
+
+
+
+
+
 
 
 @router.get('/rules')

@@ -17,7 +17,7 @@ DB_ORM_CONFIG = {
         }
     },
     'apps': {
-        'base': {'models': ['models.base', 'aerich.models'], 'default_connection': 'base'}
+        'base': {'models': ['models.base', 'models.sites', 'aerich.models'], 'default_connection': 'base'}
     },
     'use_tz': False,
     'timezone': 'Asia/Shanghai'

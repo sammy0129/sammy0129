@@ -7,5 +7,15 @@ class CreateUser(BaseModel):
     username: str
     password: str
 
+
+
+    class Config:
+        from_attributes = True
+
+
+class UserInfo(BaseModel):
+    username: str
+    avatar: str
+
     class Config:
         from_attributes = True

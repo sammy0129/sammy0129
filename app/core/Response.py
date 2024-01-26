@@ -1,6 +1,5 @@
 from typing import List
 
-
 def base_response(code, msg, data = None):
     if data is None:
         data = []
